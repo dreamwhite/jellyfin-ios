@@ -109,14 +109,17 @@ const VideoPlayer = () => {
 						setIsPresenting(true);
 						rootStore.set({ isFullscreen: true });
 						break;
-                                        case VideoFullscreenUpdate.PLAYER_DID_PRESENT:
-                                                setIsPresenting(false);
-                                                if (!mediaStore.isPlaying) {
-                                                        player.current?.playAsync()
-                                                                .catch(console.debug);
-                                                }
-                                                break;
-                                        case VideoFullscreenUpdate.PLAYER_WILL_DISMISS:
+					case VideoFullscreenUpdate.PLAYER_DID_PRESENT:
+						setIsPresenting(false);
+						if (!mediaStore.isPlaying) {
+							const current = player.current;
+							if (current) {
+								const playPromise = current.playAsync();
+								playPromise.catch(console.debug);
+							}
+						}
+						break;
+					case VideoFullscreenUpdate.PLAYER_WILL_DISMISS:
 						setIsDismissing(true);
 						break;
 					case VideoFullscreenUpdate.PLAYER_DID_DISMISS:
